@@ -210,7 +210,7 @@ class App {
          */
     printSummary() {
             for (var i = 0; i < paymentManager.length; i++) {
-                return paymentManager[i];
+                console.log(paymentManager[i]);
             }
             // escribir por consola la informacion de todos los pagos
             // que estan en el paymentManager
@@ -220,23 +220,23 @@ class App {
          * al siguiente pago.
          */
     accept() {
-        try {
-            var result = this._paymentManager.accept(payment.id);
-            payment.state = PAYMENT_STATES.ACCEPT;
-            return result;
-        } catch (error) {
-            payment.state = PAYMENT_STATES.ERROR;
-            throw error;
+            try {
+                this._paymentManager.accept(this._currentPayment);
 
-        };
-        return this._currentPaymentIndex + 1;
-    }
+            } catch (err) {
+                console.log(err);
 
-    // llamar a paymentManager.accept pasandole el pago 
-    // actual y si hay algun error pintarlo por consola
-    // al terminar, tengas o no error tienes que
-    // actualizar this._currentPaymentIndex sumando 1
-    // y pintar el pago nuevo
+            } finally {
+                this._currentPaymentIndex++;
+                this.printPayment();
+
+            }
+        }
+        // llamar a paymentManager.accept pasandole el pago 
+        // actual y si hay algun error pintarlo por consola
+        // al terminar, tengas o no error tienes que
+        // actualizar this._currentPaymentIndex sumando 1
+        // y pintar el pago nuevo
 
     /**
      * Declina el pago actual y pasa
